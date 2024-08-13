@@ -17,7 +17,7 @@ export class CreateUserDto {
     })
     @IsNotEmpty()
     @IsString()
-    username: string;
+    name: string;
 
     @ApiProperty({
         description: 'User password',
