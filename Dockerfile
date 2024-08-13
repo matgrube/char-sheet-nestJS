@@ -1,16 +1,29 @@
-# Base image
-FROM node:14-alpine
-# Setting work directory
-WORKDIR /usr/src/app
-# Copy package.json and package-lock.json (if available)
+# Installing dependencies:
+FROM node:20-alpine AS install-dependencies
+WORKDIR /user/src/app
 COPY package*.json ./
-# Install Loglask dependencies
-RUN npm install
-# Copy source files
+RUN npm ci
 COPY . .
-# Building app
+
+
+# Creating a build:
+FROM node:20-alpine AS test
+WORKDIR /user/src/app
+COPY --from=install-dependencies /user/src/app ./
+RUN npm run test
+USER node
+
+# Creating a build:
+FROM node:20-alpine AS create-build
+WORKDIR /user/src/app
+COPY --from=install-dependencies /user/src/app ./
 RUN npm run build
-# Expose port 3000
-EXPOSE 3000
-# Start the server
-CMD [ "npm", "start" ]
+USER node
+
+# Running the application:
+FROM node:20-alpine AS run
+WORKDIR /user/src/app
+COPY --from=install-dependencies /user/src/app/node_modules ./node_modules
+COPY --from=create-build /user/src/app/dist ./dist
+COPY package.json tsconfig.json ./
+CMD ["npm", "run", "start:prod"]
