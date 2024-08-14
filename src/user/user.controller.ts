@@ -1,16 +1,12 @@
 import {
-    Body,
   ClassSerializerInterceptor,
   Controller,
   Get,
-  HttpCode,
-  Post,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiConflictResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { UserEntity } from './models/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
 
 @ApiTags('User')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -31,19 +27,4 @@ export class UserController {
   async getAllUsers(): Promise<UserEntity[]> {
     return await this.userService.getUsers();
   };
-
-  @Post()
-  @HttpCode(200)
-  @ApiOperation({
-    summary: 'Create user',
-    description: 'Creates new user'
-  })
-  @ApiConflictResponse({
-    description: 'Email or username is already taken'
-  })
-  async createUser(
-    @Body() body: CreateUserDto
-  ): Promise<UserEntity> {
-    return await this.userService.createUsers(body);
-  }
 }
