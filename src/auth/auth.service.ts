@@ -1,6 +1,6 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { UserService } from "src/user/user.service";
-import { bcrypt } from "bcrypt";
+import * as bcrypt from "bcrypt";
 import { CreateUserDto } from "src/user/dto/create-user.dto";
 import { UserEntity } from "src/user/models/user.entity";
 import { LoginUserDto } from "src/user/dto/login-user.dto";
