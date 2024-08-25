@@ -24,7 +24,7 @@ export class AuthController {
     @Post('login')
     @HttpCode(200)
     // TODO: Switch to returning JWT
-    login(@Body() body: LoginUserDto): Promise<UserEntity> {
+    login(@Body() body: LoginUserDto): Promise<{ token: string }> {
         return this.authService.login(body);
     }
 

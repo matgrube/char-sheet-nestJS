@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UserEntity } from "src/user/models/user.entity";
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity('campaign')
@@ -24,10 +24,16 @@ export class CampaignEntity {
         example: 3
     })
     @Column()
-    @OneToMany(() => UserEntity, user => user.id, { onDelete: 'DEFAULT' })
+    owner_id: number;
+
+    @ManyToOne(() => UserEntity, user => user.id)
     @JoinColumn({ name: 'owner_id' })
     user: UserEntity;
 
     @Column()
-    owner_id: number;
+    players_ids: number[];
+
+    @ManyToOne(() => UserEntity, user => user.id)
+    @JoinColumn({ name: 'players_ids' })
+    players: UserEntity[]
 }

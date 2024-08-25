@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { CampaignEntity } from "src/campaing/models/campaign.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('user')
 export class UserEntity {
@@ -32,4 +33,7 @@ export class UserEntity {
     @Column()
     @Exclude()
     password: string;
+
+    @OneToMany(() => CampaignEntity, campaing => campaing.user)
+    campaign: CampaignEntity[]
 }

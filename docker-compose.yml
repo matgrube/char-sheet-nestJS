@@ -2,15 +2,21 @@
 version: "3"
 services:
   postgres:
-    image: postgres:10.4
+    image: postgres:15.2-alpine
+    networks:
+      - postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - 5432:5432
     env_file:
       - .env
 
   app:
     build: .
     depends_on:
+      - postgres
+    networks:
       - postgres
     environment:
       NODE_ENV: development
@@ -23,3 +29,7 @@ services:
     volumes:
       - .:/app/
       - /app/node_modules
+
+networks:
+  postgres:
+    driver: bridge
