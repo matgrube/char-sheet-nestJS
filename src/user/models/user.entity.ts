@@ -34,6 +34,10 @@ export class UserEntity {
     @Exclude()
     password: string;
 
-    @OneToMany(() => CampaignEntity, campaing => campaing.user)
-    campaign: CampaignEntity[]
+    @ApiProperty({
+        type: () => CampaignEntity,
+        description: 'Campaigns owned by a user',
+    })
+    @OneToMany(() => CampaignEntity, campaign => campaign.owner)
+    owned_campaigns: CampaignEntity[]
 }

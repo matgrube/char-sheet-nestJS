@@ -20,20 +20,10 @@ export class CampaignEntity {
     name: string;
 
     @ApiProperty({
+        type: () => UserEntity,
         description: 'Campaign GM id',
         example: 3
     })
-    @Column()
-    owner_id: number;
-
-    @ManyToOne(() => UserEntity, user => user.id)
-    @JoinColumn({ name: 'owner_id' })
-    user: UserEntity;
-
-    @Column()
-    players_ids: number[];
-
-    @ManyToOne(() => UserEntity, user => user.id)
-    @JoinColumn({ name: 'players_ids' })
-    players: UserEntity[]
+    @ManyToOne(() => UserEntity, user => user.owned_campaigns)
+    owner: UserEntity;
 }
